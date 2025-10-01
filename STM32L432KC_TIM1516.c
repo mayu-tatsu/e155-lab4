@@ -5,7 +5,6 @@
 #include "STM32L432KC_TIM1516.h"
 
 void initTIM1516(TIM1516_TypeDef* TIMX) {
-
   TIMX->PSC = TIM15_PSC;      // Set prescaler
   
   // Disabling slave mode
@@ -18,6 +17,30 @@ void initTIM1516(TIM1516_TypeDef* TIMX) {
   TIMX->CNT = 0;              // Reset counter to 0
 }
 
+void initTIM1516_PWM(TIM1516_TypeDef* TIMX) {
+  TIMX->PSC = TIM16_PSC;      // Set prescaler
+  
+  // Disabling slave mode
+  // TIMX->SMCR &= ~(    1 << 16);
+  // TIMX->SMCR &= ~(0b111 << 0);
+
+  TIMX->CCR1 = 0x7FFF;            // Using CH1, set 50% duty cycle
+  TIMX->CCMR1 &= ~(0b111 << 4);   // Cleaning
+  TIMX->CCMR1 |=  (0b110 << 4);   // Set PWM mode 1
+  TIMX->CCMR1 |=  (1     << 3);   // Enable CH1 preload register
+  // TIMX->CR1   |=  (1     << 7);   // Enable auto-reload preload
+
+  TIMX->BDTR |= (1 << 15);        // Main output enable
+
+  TIMX->CCER |=  (1 << 0);     // CC1E output enable
+  TIMX->CCER &= ~(1 << 1);     // CC1P output polarity
+
+  TIMX->ARR  = 0xFFFF;        // Max ARR to ensure no event spamming
+  TIMX->EGR |= (1 << 0);      // Generates event to reinitialize counter
+  TIMX->CR1 |= (1 << 0);      // Enable counter
+  TIMX->CNT  = 0;             // Reset counter to 0
+}
+
 void delay_ms(TIM1516_TypeDef* TIMX, uint32_t ms) {
   volatile uint32_t duration = ms * 80000 / (TIM15_PSC + 1);  // convert to ARR val given input clk+psc
   
@@ -25,4 +48,17 @@ void delay_ms(TIM1516_TypeDef* TIMX, uint32_t ms) {
   TIMX->ARR  = duration;
   TIMX->SR  &= ~(1 << 0);       // clear update interrupt flag
   while((TIMX->SR & 1) == 0){};
+}
+
+void speaker_freq(TIM1516_TypeDef* TIMX, uint32_t freq) {
+  volatile uint32_t arr_val = (80000000 / (TIM16_PSC + 1) / freq) - 1;   // find new ARR value
+
+  if (freq == 0) {
+    TIMX->ARR  = 0x0000;
+  } else {
+    TIMX->ARR   = arr_val;
+  }
+  TIMX->CCR1  = arr_val / 2;                   // creates 50% duty cycle
+  TIMX->EGR  |= (1 << 0);                      // update
+  TIMX->CNT = 0;
 }

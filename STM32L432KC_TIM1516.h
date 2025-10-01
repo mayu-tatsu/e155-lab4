@@ -23,7 +23,8 @@
 #define TIM15_BASE (0x40014000UL)
 #define TIM16_BASE (0x40014400UL)
 
-#define TIM15_PSC  (20)
+#define TIM15_PSC  (4000)
+#define TIM16_PSC  (20)
 
 typedef struct {
   __IO uint32_t CR1;        /*!< TIM1516 control register 1,              Address Offset: 0x00 */
@@ -61,6 +62,8 @@ typedef struct {
 ///////////////////////////////////////////////////////////////////////////////
 
 void initTIM1516(TIM1516_TypeDef* TIMX);
+void initTIM1516_PWM(TIM1516_TypeDef* TIMX);
 void delay_ms(TIM1516_TypeDef* TIMX, uint32_t ms);
+void speaker_freq(TIM1516_TypeDef* TIMX, uint32_t freq);
 
 #endif
