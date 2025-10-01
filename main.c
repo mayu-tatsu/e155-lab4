@@ -6,7 +6,6 @@
 #include "STM32L432KC_FLASH.h"
 #include "STM32L432KC_GPIO.h"
 #include "STM32L432KC_RCC.h"
-// #include "STM32L432KC_TIM23.h"
 #include "STM32L432KC_TIM1516.h"
 
 #define SPEAKER_PIN 6           // output pin for TIM16_CH1 (note freq)
