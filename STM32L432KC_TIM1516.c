@@ -2,6 +2,14 @@
 // Mayu Tatsumi; mtatsumi@g.hmc.edu
 // 2025-9-30
 
+// Defines all functions required for playing the speaker,
+// building off the _TIM1516 header file. Has functions for
+// the instantiation for both pins 15 and 16. 15 functions
+// just as a timer, and 16 as a PWM. delay_ms creates a
+// delay via while loop with nothing in it, taking timer 15.
+// speaker_freq adjusts the frequency of each note for the
+// PWM output from timer 16.
+
 #include "STM32L432KC_TIM1516.h"
 
 void initTIM1516(TIM1516_TypeDef* TIMX) {

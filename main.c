@@ -2,6 +2,10 @@
 // Mayu Tatsumi; mtatsumi@g.hmc.edu
 // 2025-9-29
 
+// Configures, enables, and instantiates all timers and pins necessary.
+// Sends a square wave to GPIO PA6 by setting various frequencies and
+// creating delays.
+
 #include "notes.h"
 #include "STM32L432KC_FLASH.h"
 #include "STM32L432KC_GPIO.h"

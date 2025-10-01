@@ -2,9 +2,11 @@
 // Mayu Tatsumi; mtatsumi@g.hmc.edu
 // 2025-9-30
 
-// Fur Elise, E155 Lab 4
+// Contains frequency and duration data for two songs: Fur Elise and
+// the Superman 2025 score.
 // Provided by Josh Brake as part of Lab 4 Starter Code
 
+// Fur Elise
 // Pitch in Hz, duration in ms
 const int notes[][2] = {
   {659,	125},
@@ -118,6 +120,7 @@ const int notes[][2] = {
   {0, 3000}
 };
 
+// Superman 2025 Score
 const int sm_notes[][2] = {
   {349, 1000},    // F4
   {0, 4},         // pause
