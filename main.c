@@ -22,15 +22,16 @@ int main(void) {
   initTIM1516_PWM(TIM16);       // PWM for frequency
   initTIM1516(TIM15);           // note length
 
-  pinMode(SPEAKER_PIN, 2);     // set pin 2 to alternate function mode
-  GPIO->AFRL |= (0b1110 << 24);       // enable AF14 (1110) for GPIOA (pin 6: 24-27)
-
-  //while (1) {
-  //  speaker_freq(TIM16, 250);
-  //}
+  pinMode(SPEAKER_PIN, 2);        // set pin 2 to alternate function mode
+  GPIO->AFRL |= (0b1110 << 24);   // enable AF14 (1110) for GPIOA (pin 6: 24-27)
 
   for (volatile uint32_t i = 0; i < sizeof(notes) / sizeof(notes[0]); i++) {
     speaker_freq(TIM16, notes[i][0]);
     delay_ms(TIM15, notes[i][1]);
+  }
+
+  for (volatile uint32_t i = 0; i < sizeof(sm_notes) / sizeof(sm_notes[0]); i++) {
+    speaker_freq(TIM16, sm_notes[i][0]);
+    delay_ms(TIM15, sm_notes[i][1]);
   }
 }
